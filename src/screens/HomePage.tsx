@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase_utils";
 import SignupCard from "../components/auth/Signup";
+import { Navigate } from "react-router";
 
 function HomePage() {
   useEffect(() => {
@@ -21,7 +22,7 @@ function HomePage() {
   }, []);
 
   return (
-      <SignupCard />
+      <Navigate to={'signup'} />
   );
 }
 

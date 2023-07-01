@@ -10,8 +10,10 @@ import {
 } from "@chakra-ui/react";
 import { createUserWithEmailAndPassword } from "@firebase/auth";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 import { auth } from "../../firebase_utils";
 import InputField from "../formComponents/InputField";
+import LogoutButton from "../globals/LogoutButton";
 
 type FormData = {
   name: string;
@@ -20,6 +22,7 @@ type FormData = {
 };
 
 export default function SignUpCard() {
+  const navigate = useNavigate();
   const {
     register,
     formState: { errors },
@@ -44,6 +47,10 @@ export default function SignUpCard() {
         // ..
       });
   };
+
+  const navigateToSignIn = () => {
+    navigate('/signin');
+  }
 
   return (
     <Flex
@@ -118,8 +125,11 @@ export default function SignUpCard() {
             </form>
             <Stack pt={6}>
               <Text align={"center"}>
-                Already a user? <Link color={"blue.400"}>Login</Link>
+                Already a user? <Link color={"blue.400"} onClick={navigateToSignIn}>Login</Link>
               </Text>
+            </Stack>            
+            <Stack pt={6}>
+              <LogoutButton />
             </Stack>
           </Stack>
         </Box>
