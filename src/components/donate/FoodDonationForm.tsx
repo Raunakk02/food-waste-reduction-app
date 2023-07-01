@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import {
     Box,
     Button,
@@ -13,8 +14,26 @@ import {
 } from '@chakra-ui/react';
 
 import { motion } from 'framer-motion';
+import { doc, getDoc } from "firebase/firestore";
+import { db } from '../../firebase_utils';
 
 function FoodDonationForm(){
+    const [orgList, setOrgList] = useState([]);
+
+    useEffect(() => {
+        const docRef = doc(db, "organizations", "organizations_list");
+        getDoc(docRef)
+            .then((docSnap) => {
+                if (docSnap.exists()) {
+                    console.log("Document data:", docSnap.data());
+                    setOrgList(docSnap.data().list);
+                } else {
+                    // docSnap.data() will be undefined in this case
+                    console.log("No such document!");
+                }
+            });
+    },[]);
+
     const handleSubmit = (event: { preventDefault: () => void; }) => {
         event.preventDefault();
         // Handle form submission logic here
@@ -28,7 +47,7 @@ function FoodDonationForm(){
                     Food Donation Form
                 </Heading>
                 <form onSubmit={handleSubmit}>
-                    <motion.div
+                    {/* <motion.div
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
                         transition={{ duration: 0.5 }}
@@ -39,8 +58,8 @@ function FoodDonationForm(){
                             mb={8}
                             borderRadius="lg"
                         />
-                    </motion.div>
-                    <FormControl id="name" isRequired mb={4}>
+                    </motion.div> */}
+                    {/* <FormControl id="name" isRequired mb={4}>
                     <FormLabel>Name</FormLabel>
                     <Input type="text" placeholder="Enter your name" />
                     </FormControl>
@@ -51,6 +70,12 @@ function FoodDonationForm(){
                     <FormControl id="phone" isRequired mb={4}>
                     <FormLabel>Phone</FormLabel>
                     <Input type="tel" placeholder="Enter your phone number" />
+                    </FormControl> */}
+                    <FormControl id="organization" isRequired mb={4}>
+                    <FormLabel>Organization for donation</FormLabel>
+                    <Select placeholder="Select organization">
+                        {orgList.map((name, index) => (<option key={index} value={name}>{name}</option>))}
+                    </Select>
                     </FormControl>
                     <FormControl id="foodType" isRequired mb={4}>
                     <FormLabel>Food Type</FormLabel>
