@@ -8,8 +8,12 @@ import {
   useColorModeValue,
   Link,
 } from "@chakra-ui/react";
+import { createUserWithEmailAndPassword } from "@firebase/auth";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
+import { auth } from "../../firebase_utils";
 import InputField from "../formComponents/InputField";
+import LogoutButton from "../globals/LogoutButton";
 
 type FormData = {
   name: string;
@@ -18,15 +22,35 @@ type FormData = {
 };
 
 export default function SignUpCard() {
+  const navigate = useNavigate();
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm<FormData>();
 
-  const onSubmit = () => {
+  const onSubmit = ({name,email,password}:{name:string;email:string;password:string;}) => {
     console.log("submitted");
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+        console.log(user);
+        
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(error);
+        
+        // ..
+      });
   };
+
+  const navigateToSignIn = () => {
+    navigate('/signin');
+  }
 
   return (
     <Flex
@@ -67,8 +91,8 @@ export default function SignUpCard() {
                 error={errors.email}
                 placeholder={"abc@gmail.com"}
                 type="text"
-                name={"Name"}
-                label={"Name"}
+                name={"Email"}
+                label={"Email"}
                 required
               />
 
@@ -101,8 +125,11 @@ export default function SignUpCard() {
             </form>
             <Stack pt={6}>
               <Text align={"center"}>
-                Already a user? <Link color={"blue.400"}>Login</Link>
+                Already a user? <Link color={"blue.400"} onClick={navigateToSignIn}>Login</Link>
               </Text>
+            </Stack>            
+            <Stack pt={6}>
+              <LogoutButton />
             </Stack>
           </Stack>
         </Box>

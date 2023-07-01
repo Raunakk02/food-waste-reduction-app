@@ -5,15 +5,22 @@ import {
   Button,
   Heading,
   useColorModeValue,
+  Link,
+  Text
 } from "@chakra-ui/react";
 import InputField from "../formComponents/InputField";
 import { useForm } from "react-hook-form";
+import { signInWithEmailAndPassword } from "@firebase/auth";
+import { auth } from "../../firebase_utils";
+import { useNavigate } from "react-router";
+import LogoutButton from "../globals/LogoutButton";
 type FormData = {
   email: string;
   password: string;
 };
 
 export default function SignInCard() {
+  const navigate = useNavigate();
   const {
     register,
     formState: { errors },
@@ -28,7 +35,23 @@ export default function SignInCard() {
     password: string;
   }) => {
     console.log("submitted");
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+        console.log(user);
+        
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
   };
+
+  const navigateToSignUp = () => {
+    navigate('/signup');
+  }
 
   return (
     <Flex
@@ -83,6 +106,14 @@ export default function SignInCard() {
                 >
                   Sign in
                 </Button>
+              </Stack>
+              <Stack pt={6}>
+                <Text align={"center"}>
+                  Don't have an account? <Link color={"blue.400"} onClick={navigateToSignUp}>Sign Up</Link>
+                </Text>
+              </Stack>            
+              <Stack pt={6}>
+                <LogoutButton />
               </Stack>
             </form>
           </Stack>
