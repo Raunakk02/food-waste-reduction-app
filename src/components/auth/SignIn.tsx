@@ -4,45 +4,30 @@ import {
   Stack,
   Button,
   Heading,
-  Text,
   useColorModeValue,
-  Link,
 } from "@chakra-ui/react";
-import { createUserWithEmailAndPassword } from "@firebase/auth";
-import { useForm } from "react-hook-form";
-import { auth } from "../../firebase_utils";
 import InputField from "../formComponents/InputField";
-
+import { useForm } from "react-hook-form";
 type FormData = {
-  name: string;
   email: string;
   password: string;
 };
 
-export default function SignUpCard() {
+export default function SignInCard() {
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm<FormData>();
 
-  const onSubmit = ({name,email,password}:{name:string;email:string;password:string;}) => {
+  const onSubmit = ({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }) => {
     console.log("submitted");
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in 
-        const user = userCredential.user;
-        console.log(user);
-        
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(error);
-        
-        // ..
-      });
   };
 
   return (
@@ -54,9 +39,7 @@ export default function SignUpCard() {
     >
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
         <Stack align={"center"}>
-          <Heading fontSize={"4xl"} textAlign={"center"}>
-            Sign up
-          </Heading>
+          <Heading fontSize={"4xl"}>Sign in to your account</Heading>
         </Stack>
         <Box
           rounded={"lg"}
@@ -67,25 +50,14 @@ export default function SignUpCard() {
           <Stack spacing={4}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <InputField
-                register={register("name", {
-                  required: "Required",
-                })}
-                error={errors.name}
-                placeholder={"John Doe"}
-                type="text"
-                name={"Name"}
-                label={"Name"}
-                required
-              />
-              <InputField
                 register={register("email", {
                   required: "Required",
                 })}
                 error={errors.email}
                 placeholder={"abc@gmail.com"}
                 type="text"
-                name={"Email"}
-                label={"Email"}
+                name={"Name"}
+                label={"Name"}
                 required
               />
 
@@ -100,11 +72,8 @@ export default function SignUpCard() {
                 label={"Password"}
                 required
               />
-
-              <Stack spacing={10} pt={2}>
+              <Stack spacing={10}>
                 <Button
-                  loadingText="Submitting"
-                  size="lg"
                   bg={"blue.400"}
                   color={"white"}
                   _hover={{
@@ -112,15 +81,10 @@ export default function SignUpCard() {
                   }}
                   type="submit"
                 >
-                  Sign up
+                  Sign in
                 </Button>
               </Stack>
             </form>
-            <Stack pt={6}>
-              <Text align={"center"}>
-                Already a user? <Link color={"blue.400"}>Login</Link>
-              </Text>
-            </Stack>
           </Stack>
         </Box>
       </Stack>
