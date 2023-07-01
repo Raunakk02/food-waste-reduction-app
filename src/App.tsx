@@ -5,7 +5,8 @@ import Loader from "./components/globals/Loader";
 import Donate from "./screens/Donate";
 import PrivateRoutes from "./components/globals/PrivateRoutes";
 import HomePage from "./screens/HomePage";
-import SignupCard from "./components/auth/Signup";
+import SignUpCard from "./components/auth/SignUp";
+import SignInCard from "./components/auth/SignIn";
 
 function App() {
   return (
@@ -13,7 +14,8 @@ function App() {
       <Suspense fallback={<Loader />}>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/signup" element={<SignupCard />} />
+          <Route path="/signup" element={<SignUpCard />} />
+          <Route path="/signin" element={<SignInCard />} />
           <Route path="/*" element={<PrivateRoutes />}>
             <Route path="donate" element={<Donate />} />
           </Route>
