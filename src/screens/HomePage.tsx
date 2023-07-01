@@ -2,9 +2,12 @@ import { useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase_utils";
 import SignupCard from "../components/auth/Signup";
-import { Navigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
+import { Button, Link } from "@chakra-ui/react";
 
 function HomePage() {
+  const navigate = useNavigate();
+
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -21,6 +24,14 @@ function HomePage() {
     });
   }, []);
 
+  const navigateToDonatePage = () => {
+    navigate('/donate');
+  }
+
+  const navigateToSignUp = () => {
+    navigate('/signup');
+  }
+
   return (
       // <Navigate to={'signup'} />
       <div>
@@ -32,6 +43,7 @@ function HomePage() {
               <li><a href="#">Recipes</a></li>
               <li><a href="#">Tips &amp; Tricks</a></li>
               <li><a href="#">Contact</a></li>
+              <Link color={"blue.400"} onClick={navigateToSignUp}>Sign Up</Link>
             </ul>
           </nav>
         </header>
@@ -40,7 +52,16 @@ function HomePage() {
           <div className="hero-content">
             <h1>Reduce Food Waste, Save the Planet</h1>
             <p>Discover easy and practical ways to reduce food waste in your kitchen</p>
-            <a href="#" className="btn">Get Started</a>
+            <Button
+              bg={"blue.400"}
+              color={"white"}
+              _hover={{
+                bg: "blue.500",
+              }}
+              onClick={navigateToDonatePage}
+            >
+              Get Started
+            </Button>
           </div>
         </section>
         

@@ -40,6 +40,7 @@ export default function SignInCard() {
         // Signed in 
         const user = userCredential.user;
         console.log(user);
+        navigate('/');
         
         // ...
       })
