@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import Loader from "./components/globals/Loader";
-import Donate from "./screens/Donate";
+import Donate from "./screens/individuals/Donate";
 import PrivateRoutes from "./components/globals/PrivateRoutes";
 import HomePage from "./screens/HomePage";
 import SignUpCard from "./components/auth/Signup";
