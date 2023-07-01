@@ -1,25 +1,23 @@
-import * as React from "react";
-import { Route, Routes } from "react-router-dom";
-import { RequireAuth } from "./components/globals/ProtectedRoutes";
-import HomeScreen from "./screens/HomeScreen";
-import Loader from "./components/globals/Loader";
-import PageNotFound from "./screens/errorPages/PageNotFound";
+import { Suspense } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import './App.css';
+import Loader from './components/globals/Loader';
+import Donate from './components/pages/private/Donate';
+import PrivateRoutes from './components/pages/PrivateRoutes';
+import HomePage from './components/pages/public/HomePage';
 
 function App() {
   return (
-    <>
-      <React.Suspense fallback={<Loader />}>
+    <div className="App">
+      <Suspense fallback={<Loader />}>
         <Routes>
-          <Route path="/" element={<HomeScreen />} />
-          {/* <Route path="/login" element={<LoginScreen />} />
-          <Route path="/register" element={<RegisterScreen />} /> */}
-
-          <Route path="/*" element={<RequireAuth />}>
-            <Route path="*" element={<PageNotFound />} />
+          <Route path='/' element={<HomePage />}/>
+          <Route path='/*' element={<PrivateRoutes />}>
+            <Route path='donate' element={<Donate />}/>
           </Route>
         </Routes>
-      </React.Suspense>
-    </>
+      </Suspense>
+    </div>
   );
 }
 

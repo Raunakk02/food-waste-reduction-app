@@ -1,35 +1,33 @@
-import { createRoot } from "react-dom/client";
-import { ColorModeScript } from "@chakra-ui/react";
-import React from "react";
-import App from "./App";
-import { ChakraProvider } from "@chakra-ui/react";
-import theme from "./theme";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { BrowserRouter } from "react-router-dom";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ChakraProvider } from '@chakra-ui/react';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+
+const root = ReactDOM.createRoot(
+  document.getElementById('root') as HTMLElement
+);
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: false,
-      refetchOnWindowFocus: false,
-    },
-  },
+      refetchOnWindowFocus: false
+    }
+  }
 });
 
-const rootElement = document.getElementById("root");
-if (!rootElement) throw new Error("Failed to find the root element");
-
-const root = createRoot(rootElement);
-
 root.render(
-  <>
-    <ColorModeScript />
+  <React.StrictMode>
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <ChakraProvider theme={theme}>
+        <ChakraProvider>
           <App />
         </ChakraProvider>
       </QueryClientProvider>
     </BrowserRouter>
-  </>
+  </React.StrictMode>
 );
