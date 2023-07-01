@@ -8,7 +8,9 @@ import {
   useColorModeValue,
   Link,
 } from "@chakra-ui/react";
+import { createUserWithEmailAndPassword } from "@firebase/auth";
 import { useForm } from "react-hook-form";
+import { auth } from "../../firebase_utils";
 import InputField from "../formComponents/InputField";
 
 type FormData = {
@@ -24,8 +26,23 @@ export default function SignupCard() {
     handleSubmit,
   } = useForm<FormData>();
 
-  const onSubmit = () => {
+  const onSubmit = ({name,email,password}:{name:string;email:string;password:string;}) => {
     console.log("submitted");
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+        console.log(user);
+        
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(error);
+        
+        // ..
+      });
   };
 
   return (
@@ -67,8 +84,8 @@ export default function SignupCard() {
                 error={errors.email}
                 placeholder={"abc@gmail.com"}
                 type="text"
-                name={"Name"}
-                label={"Name"}
+                name={"Email"}
+                label={"Email"}
                 required
               />
 
